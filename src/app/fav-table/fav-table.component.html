@@ -1,0 +1,93 @@
+<div id="navigation" class="container mt-3" *ngIf="showTable">
+  <div
+    class="row  align-items-center rounded mt-5"
+    style="background-color: rgb(243, 234, 203); color:rgb(187, 157, 73)"
+    *ngIf="tableData.length == 0"
+  >
+    <div class="col">
+      <p class="mt-3">No Records</p>
+    </div>
+  </div>
+  <div class="row" *ngIf="tableData.length != 0">
+    <div class="col">
+      <table class="table table-striped ">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">City</th>
+            <th scope="col">State</th>
+            <th scope="col">Favorites</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of tableData | keyvalue; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>
+              <img [src]="item.value" style="width: 5vw; height:9vh" />
+            </td>
+            <td>
+              <a
+                tooltip="{{ item.key.split(',')[0] }}"
+                placement="bottom"
+                href="#"
+                (click)="searchOn(item.key)"
+                >{{ item.key.split(",")[0] }}</a
+              >
+            </td>
+            <td>{{ item.key.split(",")[1] }}</td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-light material-icons "
+                style="color: #C69F3D; width: 4.5vw;"
+                (click)="deleteRow(item.key)"
+              >
+                delete_outline
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="progressBar" class="container mt-3" *ngIf="displayBar">
+  <div class="row">
+    <div class="col">
+      <div class="progress">
+        <div
+          class="progress-bar progress-bar-animated progress-bar-striped bg-info active"
+          role="progressbar"
+          style="width: 50%"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div id="wanring" class="container mt-3" *ngIf="!hasRecord" style="background-color: yellow;">
+  <div class="row">
+    <div class="col">
+      <p>No Records</p>>
+    </div>
+  </div>
+</div> -->
+
+<div id="navigation" class="container mt-3" *ngIf="showResult">
+  <div class="row">
+    <div class="col">
+      <app-weather-chart
+        [weatherJson]="weatherJson"
+        [cityName]="cityName"
+        [stateName]="stateName"
+        [imageUrl]="imageUrl"
+      ></app-weather-chart>
+    </div>
+  </div>
+</div>

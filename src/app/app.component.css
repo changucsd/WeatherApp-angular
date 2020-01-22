@@ -1,0 +1,15 @@
+.required-field::after {
+  content: "*";
+  color: red;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid black;
+  color: white;
+}
+#searchingBox {
+  /* border-radius: 15px; */
+  background-color: #7591a7;
+  box-shadow: 4px 4px 4px gray;
+  color: white;
+}

@@ -1,0 +1,243 @@
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 rounded border border-dark " id="searchingBox">
+      <h2 class="text-white text-center pt-5">Weather Search</h2>
+      <!-- <form class="md-form form-sm">  -->
+      <form [formGroup]="formData" (ngSubmit)="onSubmit()">
+        <div class="col">
+          <div class="form-row pb-3">
+            <label class="control-label col-sm-2 required-field" for="street"
+              >Street</label
+            >
+            <div class="col-sm-8">
+              <input
+                class="form-control"
+                id="street"
+                type="text"
+                placeholder="Enter Street Name"
+                formControlName="street"
+                [ngClass]="{
+                  'is-invalid':
+                    formData.get('street').touched &&
+                    formData.get('street').invalid
+                }"
+              />
+              <div class="invalid-feedback">
+                <div>Please enter a street.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="form-row  pb-3">
+            <label class="control-label col-sm-2 required-field" for="city"
+              >City</label
+            >
+            <div class="col-sm-8">
+              <input
+                class="form-control"
+                id="city"
+                type="text"
+                placeholder="Enter City Name"
+                formControlName="city"
+                matInput
+                [matAutocomplete]="auto"
+                [ngClass]="{
+                  'is-invalid':
+                    formData.get('city').touched && formData.get('city').invalid
+                }"
+              />
+              <div class="invalid-feedback">
+                <div>Please enter a city.</div>
+              </div>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option
+                  *ngFor="let option of filteredOptions | async"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="form-row pb-3">
+            <label class="control-label col-sm-2 required-field" for="states"
+              >State</label
+            >
+            <div class="col-sm-6">
+              <select class="form-control" id="state" formControlName="state">
+                <option disabled value="" selected>Select State</option>
+                <option value="AL">Alabama</option>
+                <option value="AK">Alaska</option>
+                <option value="AZ">Arizona</option>
+                <option value="AR">Arkansas</option>
+                <option value="CA">California</option>
+                <option value="CO">Colorado</option>
+                <option value="CT">Connecticut</option>
+                <option value="DE">Delaware</option>
+                <option value="DC">District Of Columbia</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="HI">Hawaii</option>
+                <option value="ID">Idaho</option>
+                <option value="IL">Illinois</option>
+                <option value="IN">Indiana</option>
+                <option value="IA">Iowa</option>
+                <option value="KS">Kansas</option>
+                <option value="KY">Kentucky</option>
+                <option value="LA">Louisiana</option>
+                <option value="ME">Maine</option>
+                <option value="MD">Maryland</option>
+                <option value="MA">Massachusetts</option>
+                <option value="MI">Michigan</option>
+                <option value="MN">Minnesota</option>
+                <option value="MS">Mississippi</option>
+                <option value="MO">Missouri</option>
+                <option value="MT">Montana</option>
+                <option value="NE">Nebraska</option>
+                <option value="NV">Nevada</option>
+                <option value="NH">New Hampshire</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NM">New Mexico</option>
+                <option value="NY">New York</option>
+                <option value="NC">North Carolina</option>
+                <option value="ND">North Dakota</option>
+                <option value="OH">Ohio</option>
+                <option value="OK">Oklahoma</option>
+                <option value="OR">Oregon</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="RI">Rhode Island</option>
+                <option value="SC">South Carolina</option>
+                <option value="SD">South Dakota</option>
+                <option value="TN">Tennessee</option>
+                <option value="TX">Texas</option>
+                <option value="UT">Utah</option>
+                <option value="VT">Vermont</option>
+                <option value="VA">Virginia</option>
+                <option value="WA">Washington</option>
+                <option value="WV">West Virginia</option>
+                <option value="WI">Wisconsin</option>
+                <option value="WY">Wyoming</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="form-check pb-3">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="locationBox"
+              formControlName="locationBox"
+              (click)="toggle($event)"
+            />
+
+            <label class="form-check-label" for="locationBox"
+              >Current Location</label
+            >
+          </div>
+        </div>
+
+        <div class="col pb-5">
+          <div class="btn-toolbar pb-3">
+            <button
+              type="submit"
+              class="btn btn-light mr-3 align-middle"
+              [disabled]="!formData.valid"
+              style=" color:grey"
+            >
+              <i class="material-icons align-middle">
+                search
+              </i>
+              Search
+            </button>
+            <button
+              type="button"
+              style=" color:grey"
+              class="btn btn-light align-middle"
+              (click)="clearPage()"
+            >
+              <i class="material-icons align-middle"> clear_all </i>Clear
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container mt-3">
+  <div class="row">
+    <div class="mx-auto">
+      <div class="btn-toolbar">
+        <div class="col">
+          <button
+            class="btn btn-light"
+            style="border: 1px solid black; color:white"
+            [style.background-color]="resultToggle ? ' #7591a7' : 'white'"
+            [style.color]="resultToggle ? ' white' : 'grey'"
+            (click)="clickResult()"
+          >
+            Results
+          </button>
+        </div>
+        <div class="col">
+          <button
+            class="btn btn-light"
+            style="border: 1px solid black; color:white"
+            [style.background-color]="favToggle ? ' #7591a7' : 'white'"
+            [style.color]="favToggle ? ' white' : 'grey'"
+            (click)="clickFav()"
+          >
+            Favorites
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="progressBar" class="container mt-3" *ngIf="displayBar">
+  <div class="row">
+    <div class="col">
+      <div class="progress">
+        <div
+          class="progress-bar progress-bar-animated progress-bar-striped bg-info active"
+          role="progressbar"
+          style="width: 50%"
+          aria-valuenow="50"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="errorMessage" class="container mt-3" *ngIf="isInvalid && !favToggle">
+  <div
+    class="row  align-items-center rounded mt-5"
+    style="background-color: rgb(243, 234, 203); color:rgb(187, 157, 73)"
+  >
+    <div class="col">
+      <p class="mt-3">Invalid Address</p>
+    </div>
+  </div>
+</div>
+
+<app-weather-chart
+  *ngIf="weatherJson && imageUrl && resultToggle"
+  [weatherJson]="weatherJson"
+  [cityName]="cityName"
+  [stateName]="stateName"
+  [imageUrl]="imageUrl"
+>
+</app-weather-chart>
+
+<app-fav-table *ngIf="favToggle" [clickedResult]="dummy"></app-fav-table>
+
+<router-outlet></router-outlet>
